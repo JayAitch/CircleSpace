@@ -1,15 +1,17 @@
 import { PreloadManager } from "./managers.preload.class"
 import * as PIXI from 'pixi.js'
-import * as Matter from 'matter-js'
-import { ASSET_MANAGER } from "../constants/constants.asset-manager.constant"
-import { PhysicsWorld } from "../singletons/managers.physics-world.class"
+import { PhysicsWorld } from "../singletons/singletons.physics-world.class"
 import { SpriteEntity } from "../physics-objects/classes/game.physics-objects.classes.sprite-entity.class"
+import { KeyboardController } from "../singletons/singletons.controller.class"
+import { Body } from "matter-js"
+import { Player } from "../player/game.player.class"
 
 /** main game manager */
 export class GameApplication extends PIXI.Application{
     private static _gameStage: PIXI.Container
     private PhsWorld: PhysicsWorld = PhysicsWorld.getInstance()
-    private testPlayer: SpriteEntity
+    private testPlayer: Player
+    private controller: KeyboardController = KeyboardController.getInstance()
     /**
      * Create a new application of this game
      * @param options_ - PIXI app options
@@ -25,7 +27,8 @@ export class GameApplication extends PIXI.Application{
             this.createUIObjects()
             this.createGameObjects()
         }) 
-        // add visual updates from physics world   
+        // add visual updates from physics world  
+        this.ticker.add(()=>this.controller.update()) 
         this.ticker.add(()=>this.PhsWorld.update())
         this.PhsWorld.run()
     }
@@ -40,7 +43,7 @@ export class GameApplication extends PIXI.Application{
     /** generate any game objects required */
     createGameObjects(){
         // create a dummy player to test physics
-        this.testPlayer = new SpriteEntity("building", 100, 100)
+        this.testPlayer = new Player(100, 100)
     }
 
 }

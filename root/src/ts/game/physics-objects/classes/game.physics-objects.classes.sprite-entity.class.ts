@@ -1,7 +1,7 @@
 import Matter = require("matter-js");
 import { ASSET_MANAGER } from "../../constants/constants.asset-manager.constant";
 import { GameApplication } from "../../managers/managers.game-manager.class";
-import { Bodies, PhysicsWorld } from "../../singletons/managers.physics-world.class";
+import { Bodies, PhysicsWorld } from "../../singletons/singletons.physics-world.class";
 import { IPhysicsEntity } from "../interfaces/game.physics-objects.physics-entity";
 
 /** generic physics entity that has a sprite */
@@ -35,9 +35,9 @@ export class SpriteEntity implements IPhysicsEntity{
     /** generate phyiscs and canvas objects */
     create(): void { 
         let {_key_:k, _x_:x, _y_:y} = this 
-        this._sprite.anchor.set(0.5)
-        let {height, width} = this._sprite
         this._sprite = ASSET_MANAGER.sprite(k, x, y)
+        let {height, width} = this._sprite
+        this._sprite.anchor.set(0.5)
         this._rb = Bodies.rectangle(x, y,height, width)
         GameApplication.GameStage.addChild(this._sprite)
         PhysicsWorld.getInstance().addEntity(this)

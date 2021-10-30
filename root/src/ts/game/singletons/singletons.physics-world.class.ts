@@ -24,6 +24,7 @@ export class PhysicsWorld{
     /** obscure constructor externally */
     private constructor(){
         this._engine = Engine.create()
+        this._engine.gravity.y = 0
     }
 
     /**

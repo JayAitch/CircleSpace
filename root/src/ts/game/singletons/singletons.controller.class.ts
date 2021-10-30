@@ -37,7 +37,6 @@ export class KeyboardController{
         const index = this._pressedKeys.indexOf(key)
         if(index > -1)
             this._pressedKeys.splice(index, 1)
-            console.log(this._pressedKeys)
     }
 
     /**

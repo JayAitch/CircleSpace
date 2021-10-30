@@ -5,11 +5,11 @@ import { Bodies, PhysicsWorld } from "../../singletons/singletons.physics-world.
 import { IPhysicsEntity } from "../interfaces/game.physics-objects.physics-entity";
 
 /** generic physics entity that has a sprite */
-export class SpriteEntity implements IPhysicsEntity{
+export class SpriteEntity  implements IPhysicsEntity {
     /** visual representation of sprite */
-    private _sprite: PIXI.Sprite
+    protected _sprite: PIXI.Sprite
     /** rigid body of this entity */
-    private _rb: Matter.Body
+    protected _rb: Matter.Body
 
 
     /**
@@ -18,7 +18,7 @@ export class SpriteEntity implements IPhysicsEntity{
      * @param _x_ - initial x position
      * @param _y_ - initial y position
      */
-    constructor(private _key_:string, private _x_:number, private _y_: number){
+    constructor(protected _key_:string, protected _x_:number, protected _y_: number){
         this.init()
     }
 
@@ -30,6 +30,11 @@ export class SpriteEntity implements IPhysicsEntity{
     /** read access of body */
     get body(): Matter.Body {
         return this._rb
+    }
+
+    /** read access of sprite */
+    get sprite(): PIXI.Sprite{
+        return this._sprite
     }
 
     /** generate phyiscs and canvas objects */
@@ -62,5 +67,4 @@ export class SpriteEntity implements IPhysicsEntity{
     destroy(): void {
         throw new Error("Method not implemented.");
     }
-    
 }

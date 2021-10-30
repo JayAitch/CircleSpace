@@ -23,4 +23,14 @@ export class AssetManager{
         sprite.y = y_
         return sprite
     }
+
+    /**
+     * Create a texture from the key
+     * @param key_ - asset key reference
+     * @returns pixi sprite object
+     */
+    public texture(key_:string): PIXI.Texture{
+        const text = this._resources[key_].texture
+        return text
+    }
 }

@@ -1,21 +1,22 @@
-import { Body, Vector } from "matter-js";
+import { Bodies, Body, Vector } from "matter-js";
 import { clamp } from "../../functions/function.clamp.value";
+import { ASSET_MANAGER } from "../constants/constants.asset-manager.constant";
+import { GameApplication } from "../managers/managers.game-manager.class";
 import { SpriteEntity } from "../physics-objects/classes/game.physics-objects.classes.sprite-entity.class";
 import { KeyboardController } from "../singletons/singletons.controller.class";
+import { PhysicsWorld } from "../singletons/singletons.physics-world.class";
 
 /** basic controllerble player */
-export class Player{
-    /** physical representation of the player */
-    private _physical: SpriteEntity
+export class Player extends SpriteEntity{
     /** local reference to controller */
     private _controller: KeyboardController = KeyboardController.getInstance()
     /** factors to apply to velocity */
-    private _lSpeed = 5
+    private _lSpeed = 15
     private _aSpeed = 2
 
 
     constructor(x_:number, y_:number){
-        this._physical = new SpriteEntity("spaceship",x_, y_)
+        super("spaceship", x_, y_)
         this.createControls()
         console.log(this)
     }
@@ -34,9 +35,19 @@ export class Player{
      * @param dir_ - direction to apply angular velocity
      */
     applyAngular(dir_:number){
-        console.log(dir_)
         //this.testPlayer.body.angularSpeed = dir_ * 100
-        Body.setAngularVelocity(this._physical.body, this._aSpeed * dir_)
+        Body.setAngularVelocity(this.body, this._aSpeed * dir_)
+    }
+
+    // create all required physics and sprite objects
+    create(){
+        let {_key_:k, _x_:x, _y_:y} = this 
+        this._sprite = ASSET_MANAGER.sprite(k, x, y)
+        let {height, width} = this._sprite
+        this._sprite.anchor.set(0.5)
+        this._rb = Bodies.rectangle(x, y,height, width)
+        GameApplication.GameStage.addChild(this._sprite)
+        PhysicsWorld.getInstance().addEntity(this)
     }
 
     /**
@@ -46,10 +57,11 @@ export class Player{
     applyLinear(dir_:number){
         // calculate forward vector and apply speed
         let dir:Vector = {
-            y: this._lSpeed * dir_* -Math.cos(this._physical.body.angle * Math.PI / 180),
-            x: this._lSpeed * dir_* Math.sin(this._physical.body.angle * Math.PI / 180)
+            y: this._lSpeed * dir_* -Math.cos(this.body.angle * Math.PI / 180),
+            x: this._lSpeed * dir_* Math.sin(this.body.angle * Math.PI / 180)
         }
-        console.log(dir, this._physical.body.angle, this._physical.body.angle * Math.PI / 180)
-        Body.setVelocity(this._physical.body, dir)
+        Body.setVelocity(this.body, dir)
     }
+
+    get position(): PIXI.ObservablePoint{return this.sprite.position}
 }

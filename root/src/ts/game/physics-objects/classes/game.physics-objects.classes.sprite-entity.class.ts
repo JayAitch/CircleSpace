@@ -1,15 +1,16 @@
-import Matter = require("matter-js");
+import { Vector } from "detect-collisions";
 import { ASSET_MANAGER } from "../../constants/constants.asset-manager.constant";
 import { GameApplication } from "../../managers/managers.game-manager.class";
-import { Bodies, PhysicsWorld } from "../../singletons/singletons.physics-world.class";
+import { PhysicsWorld } from "../../singletons/singletons.physics-world.class";
 import { IPhysicsEntity } from "../interfaces/game.physics-objects.physics-entity";
+import { Body } from "./game.physics-objects.classes.body.class";
 
 /** generic physics entity that has a sprite */
 export class SpriteEntity  implements IPhysicsEntity {
     /** visual representation of sprite */
     protected _sprite: PIXI.Sprite
     /** rigid body of this entity */
-    protected _rb: Matter.Body
+    protected _rb: Body
 
 
     /**
@@ -18,7 +19,7 @@ export class SpriteEntity  implements IPhysicsEntity {
      * @param _x_ - initial x position
      * @param _y_ - initial y position
      */
-    constructor(protected _key_:string, protected _x_:number, protected _y_: number){
+    constructor(protected _key_:string, protected _position_:Vector){
         this.init()
     }
 
@@ -28,7 +29,7 @@ export class SpriteEntity  implements IPhysicsEntity {
     }
 
     /** read access of body */
-    get body(): Matter.Body {
+    get body(): Body {
         return this._rb
     }
 
@@ -39,11 +40,10 @@ export class SpriteEntity  implements IPhysicsEntity {
 
     /** generate phyiscs and canvas objects */
     create(): void { 
-        let {_key_:k, _x_:x, _y_:y} = this 
-        this._sprite = ASSET_MANAGER.sprite(k, x, y)
-        let {height, width} = this._sprite
+        let {_key_:k, _position_} = this 
+        this._sprite = ASSET_MANAGER.sprite(k, _position_.x, _position_.y)
         this._sprite.anchor.set(0.5)
-        this._rb = Bodies.rectangle(x, y,height, width)
+        this._rb = new Body(_position_)
         GameApplication.GameStage.addChild(this._sprite)
         PhysicsWorld.getInstance().addEntity(this)
     }
@@ -58,6 +58,8 @@ export class SpriteEntity  implements IPhysicsEntity {
     }
 
     update(): void {
+        // update physical
+        this.body.update()
         let {position, angle} = this.body       
         this._sprite.position.set(position.x, position.y)
         this._sprite.angle = angle  

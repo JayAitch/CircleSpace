@@ -1,3 +1,6 @@
+import { ICollider } from "detect-collisions";
+import { Body } from "../classes/game.physics-objects.classes.body.class";
+
 /** generic typing for any physics entity */
 export interface IPhysicsEntity{
     // update position of sprite with position of phyiscal body
@@ -11,5 +14,5 @@ export interface IPhysicsEntity{
     // start responding to physics updates after pausing  
     resume():void;
     // entities current rigid body
-    body
+    body: Body
 }

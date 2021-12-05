@@ -1,5 +1,6 @@
-import { Vector } from "detect-collisions";
+import { ICollider, Vector } from "detect-collisions";
 import { SpriteEntity } from "../physics-objects/classes/game.physics-objects.classes.sprite-entity.class";
+import { IPhysicsEntity } from "../physics-objects/interfaces/game.physics-objects.physics-entity";
 import { KeyboardController } from "../singletons/singletons.controller.class";
 
 /** basic controllerble player */
@@ -25,6 +26,10 @@ export class Player extends SpriteEntity{
         this._controller.addCallback("ArrowRight", ()=>this.applyAngular(1))
     }
 
+    /**@ignore*/
+    collide(body_:ICollider, other_: IPhysicsEntity): void {
+        // dont handle player collisions yet
+    }
 
     /**
      * Apply angular velocity in specifid direction

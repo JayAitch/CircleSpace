@@ -30,18 +30,13 @@ export class PhysicsWorld{
     // add entity to the physical world
     public addEntity(phyEnt_: IPhysicsEntity){ 
         this._entities.push(phyEnt_) 
-        this._system.insert(phyEnt_.body.collider)
-    }
-
-    createPolygon(pos, points, angle){
-        return this._system.createPolygon(pos, points, angle)
+        this._system.insert(phyEnt_.collider)
     }
 
     // update all objects with there physical representation
     public update()
     {
         this._system.update()
-       
         this._entities.map((obj)=>{
             obj.update()
         })

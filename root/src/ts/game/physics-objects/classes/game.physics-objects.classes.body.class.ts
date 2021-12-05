@@ -7,8 +7,7 @@ import { PolygonCollider } from "./game.physics-objects.classes.rectangle-collid
 // TODO move collider out of body into entity
 /** physics body */
 export class Body {
-    /** collider */
-    private _collider: PolygonCollider
+
     /** current position in world */
     private _position:Vector
     /** linear velocity */
@@ -30,15 +29,11 @@ export class Body {
      */
     constructor(position_:Vector){
         this._position = position_
-        // hard coded body to get started with
-        this._collider = new PolygonCollider(this,position_, [{x:50,y:50},{x:-50,y:50},{x:50,y:-50},{x:-50,y:-50}])
+
     }
 
     // readonly get bodies current position
     get position():Vector{return this._position}
-
-    // readonly get bodies collider
-    get collider():PolygonCollider{return this._collider}
 
     // readonly access to bodies current angle
     get angle():number{return this._angle}
@@ -65,7 +60,6 @@ export class Body {
 
             this._angle += this._aVelocity
         }
-        this._collider.update()
     }
 
 

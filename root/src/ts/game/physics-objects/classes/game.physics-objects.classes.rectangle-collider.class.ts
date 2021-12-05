@@ -1,22 +1,27 @@
 import { ICollider, Polygon, Vector } from "detect-collisions";
 import { GameApplication } from "../../managers/managers.game-manager.class";
 import { PhysicsWorld } from "../../singletons/singletons.physics-world.class";
+import { IPhysicsEntity } from "../interfaces/game.physics-objects.physics-entity";
 import { Body } from "./game.physics-objects.classes.body.class";
 
+//TODO abstact shared collision for seperate sapes
 export class PolygonCollider extends Polygon{
     // position of collider
     private pos: Vector
-    // owning body TODO - change to phyiscs entity
-    private _owner: Body
+    // owning physical entity
+    private _owner: IPhysicsEntity
+    // angle of the body
     private angle: number
 
     public static debugMode: boolean = true
     private debugGraphic: PIXI.Graphics
 
-    constructor(owner:Body, position: Vector, points: Vector[]){
+    constructor(owner:IPhysicsEntity, position: Vector, points: Vector[]){
         super(position, points)
         this._owner = owner
     }
+
+    public get owner(): IPhysicsEntity{return this._owner}
 
     // debug draw where i am calulating the collider
     public debugDraw(){
@@ -57,9 +62,12 @@ export class PolygonCollider extends Polygon{
         const system = PhysicsWorld.getInstance().system
         const potentials: ICollider[] = system.getPotentials(this)
 
-        potentials.some((body) => 
-            console.log(system.checkCollision(this, body))
-        );
+        potentials.some((body) => {
+            if(system.checkCollision(this, body)){
+                this._owner.collide(body, (<PolygonCollider>body).owner)
+            }
+            return true
+        });
     }
 
 } 

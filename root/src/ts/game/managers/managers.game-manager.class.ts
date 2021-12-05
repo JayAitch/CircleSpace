@@ -57,8 +57,8 @@ export class GameApplication extends PIXI.Application{
 
     // dummy map creation so i can tell im moving
     createMap(){
-        const maxX = 5000
-        const maxY = 5000
+        const maxX = 500
+        const maxY = 500
         const maxScale = 0.4
         const minScale = 0.1
         const amount = 20

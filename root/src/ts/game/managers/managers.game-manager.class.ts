@@ -61,7 +61,7 @@ export class GameApplication extends PIXI.Application{
         const maxY = 500
         const maxScale = 0.4
         const minScale = 0.1
-        const amount = 20
+        const amount = 2000
         for(let i = 0; amount > i; i++){
             const x = getRandomInt(-maxX, maxX)
             const y = getRandomInt(-maxY, maxY)

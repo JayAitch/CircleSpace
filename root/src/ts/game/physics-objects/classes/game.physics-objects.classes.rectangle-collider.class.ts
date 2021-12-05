@@ -13,7 +13,7 @@ export class PolygonCollider extends Polygon{
     // angle of the body
     private angle: number
 
-    public static debugMode: boolean = true
+    public static debugMode: boolean
     private debugGraphic: PIXI.Graphics
 
     constructor(owner:IPhysicsEntity, position: Vector, points: Vector[]){
@@ -29,6 +29,7 @@ export class PolygonCollider extends Polygon{
         let {minX,minY,maxX,maxY} = this
         // remove old graphic
         this.debugGraphic  && this.debugGraphic.clear()
+        this.debugGraphic  && this.debugGraphic.destroy()
         // Create a new Graphics object and add it to the scene
         let graph = new PIXI.Graphics()
 

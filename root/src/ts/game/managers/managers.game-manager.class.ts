@@ -5,7 +5,6 @@ import { SpriteEntity } from "../physics-objects/classes/game.physics-objects.cl
 import { KeyboardController } from "../singletons/singletons.controller.class"
 import { Player } from "../player/game.player.class"
 import { getRandomInt } from "../../functions/functions.get-random-int.function"
-import { GAME_CONFIG } from "../../config/game-config.constant"
 import { FollowCamera } from "../camera/classes/game.camera.classes.follow-camera.class"
 
 
@@ -40,7 +39,6 @@ export class GameApplication extends PIXI.Application{
             this.ticker.add(()=>this.controller.update()) 
             this.ticker.add(()=>this.PhsWorld.update())   
             this.ticker.add(()=>this.camera.update()) 
-            this.PhsWorld.run()
         }) 
     }
 
@@ -54,23 +52,23 @@ export class GameApplication extends PIXI.Application{
     /** generate any game objects required */
     createGameObjects(){
         // create a dummy player to test physics
-        this.testPlayer = new Player(100, 100)
+        this.testPlayer = new Player({x:100, y:100})
     }
 
     // dummy map creation so i can tell im moving
     createMap(){
-        const maxX = 1000
-        const maxY = 1000
+        const maxX = 500
+        const maxY = 500
         const maxScale = 0.4
         const minScale = 0.1
-        const amount = 20
+        const amount = 2000
         for(let i = 0; amount > i; i++){
             const x = getRandomInt(-maxX, maxX)
             const y = getRandomInt(-maxY, maxY)
             const scale = getRandomInt(minScale, maxScale)
 
 
-            let commet = new SpriteEntity("rock", x, y)
+            let commet = new SpriteEntity("rock", {x:x,y:y})
             commet.sprite.scale.set(scale)
         }
     }
